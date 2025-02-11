@@ -43,6 +43,16 @@
 
 // export { searchGithub, searchGithubUser };
 
+interface Candidate {
+  login: string;
+  name: string;
+  avatar_url: string;
+  email: string;
+  company: string;
+  location: string;
+  html_url: string;
+}
+
 const GITHUB_API_URL = "https://api.github.com/users";
 
 /**
