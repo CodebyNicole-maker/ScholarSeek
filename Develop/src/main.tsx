@@ -4,22 +4,22 @@ import './index.css';
 
 import App from './App.tsx';
 import CandidateSearch from './pages/CandidateSearch.tsx';
-import SavedCandidates from './pages/PotentialCandidates.tsx';
+import PotentialCandidates from './pages/PotentialCandidates.tsx'; // ✅ Fixed import
 import ErrorPage from './pages/ErrorPage.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <App />, // ✅ App remains a layout component
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
+        index: true, // ✅ Default child route ("/")
         element: <CandidateSearch />,
       },
       {
-        path: '/SavedCandidates',
-        element: <SavedCandidates />,
+        path: 'potential', // ✅ Corrected path
+        element: <PotentialCandidates />, // ✅ Corrected component name
       },
     ],
   },
