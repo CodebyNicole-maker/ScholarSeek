@@ -15,7 +15,7 @@ const CandidateSearch = () => {
   const [candidate, setCandidate] = useState<Candidate | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
+  const [, setSavedCandidates] = useState<Candidate[]>([]);
 
   useEffect(() => {
     loadCandidate();
