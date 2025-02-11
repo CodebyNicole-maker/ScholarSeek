@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
         usePolling: true, // Fixes potential Vite file-watching issues on some systems
       },
       host: true, // Allows network access (useful for testing on mobile devices)
-      port: 5173, // Ensures a fixed port (change if needed)
+      port: 3000, // Ensures a fixed port (change if needed)
       strictPort: true, // Prevents Vite from picking a random port if 5173 is in use
     },
     optimizeDeps: {

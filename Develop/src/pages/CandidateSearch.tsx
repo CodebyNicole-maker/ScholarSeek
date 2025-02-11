@@ -15,7 +15,7 @@ const CandidateSearch = () => {
   const [candidate, setCandidate] = useState<Candidate | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [, setSavedCandidates] = useState<Candidate[]>([]);
+  const [__savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
 
   useEffect(() => {
     loadCandidate();
@@ -38,8 +38,7 @@ const CandidateSearch = () => {
         if (userDetails) {
           console.log("✅ Candidate data received:", userDetails);
           setCandidate(userDetails);
-          setLoading(false);
-          return; // ✅ Exit loop when a valid candidate is found
+          return; // ✅ Stop searching once a valid candidate is found
         }
       }
 
@@ -65,13 +64,14 @@ const CandidateSearch = () => {
   const saveCandidate = () => {
     if (candidate) {
       try {
-        const savedCandidates: Candidate[] = JSON.parse(localStorage.getItem("savedCandidates") || "[]");
+        const storedCandidates: Candidate[] = JSON.parse(localStorage.getItem("savedCandidates") || "[]");
 
         // ✅ Prevent Duplicate Entries
-        if (!savedCandidates.some((c) => c.login === candidate.login)) {
-          const updatedCandidates = [...savedCandidates, candidate];
+        if (!storedCandidates.some((c) => c.login === candidate.login)) {
+          const updatedCandidates = [...storedCandidates, candidate];
           localStorage.setItem("savedCandidates", JSON.stringify(updatedCandidates));
-          setSavedCandidates(updatedCandidates); // ✅ Updates state to reflect change
+
+          setSavedCandidates(updatedCandidates); // ✅ Update state
           console.log("✅ Candidate saved:", candidate);
           loadCandidate(); // ✅ Load the next candidate immediately
         } else {
@@ -93,11 +93,15 @@ const CandidateSearch = () => {
         <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
       ) : candidate ? (
         <div className="card">
-          <img src={candidate.avatar_url} alt={candidate.name || "Candidate"} width="100%" style={{ borderRadius: "10px" }} />
-          <h2>{candidate.name || "No Name Provided"} <em>({candidate.login})</em></h2>
+          <img
+            src={candidate.avatar_url}
+            alt={candidate.name || "Candidate"}
+            className="candidate-avatar"
+          />
+          <h2>{candidate.name || "No Name Available"} <em>({candidate.login})</em></h2>
           <p><strong>Location:</strong> {candidate.location || "Not available"}</p>
           <p><strong>Company:</strong> {candidate.company || "Not available"}</p>
-          <p><strong>Email:</strong> 
+          <p><strong>Email:</strong>
             {candidate.email ? (
               <a href={`mailto:${candidate.email}`} style={{ color: "#00aaff" }}>
                 {candidate.email}
@@ -105,15 +109,15 @@ const CandidateSearch = () => {
             ) : "Not available"}
           </p>
           <p>
-            <strong>Profile:</strong> 
+            <strong>Profile:</strong>
             <a href={candidate.html_url} target="_blank" rel="noopener noreferrer" style={{ color: "#00aaff" }}>
               GitHub Profile
             </a>
           </p>
-          
+
           <div className="button-container">
-            <button className="reject" onClick={loadCandidate}>−</button>
-            <button className="accept" onClick={saveCandidate}>+</button>
+            <button className="reject-btn" onClick={loadCandidate}>−</button>
+            <button className="accept-btn" onClick={saveCandidate}>+</button>
           </div>
         </div>
       ) : (
