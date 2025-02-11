@@ -1,50 +1,73 @@
-// const Nav = () => {
-  // TODO: Add necessary code to display the navigation bar and link between the pages
-//   return (
-//     <div>Nav</div>
-//   )
-// };
-
-// export default Nav;
-
-import { Link } from "react-router-dom";
+import { CSSProperties } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Nav = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavigate = (path: string) => {
+    if (location.pathname !== path) {
+      navigate(path);
+    }
+  };
+
   return (
     <nav style={navStyle}>
-      <h1>GitHub Candidate Search</h1>
       <ul style={navListStyle}>
         <li>
-          <Link to="/" style={linkStyle}>Search Candidates</Link>
+          <button
+            onClick={() => handleNavigate("/")}
+            style={location.pathname === "/" ? activeLinkStyle : linkStyle}
+          >
+            Home
+          </button>
         </li>
         <li>
-          <Link to="/saved" style={linkStyle}>Saved Candidates</Link>
+          <button
+            onClick={() => handleNavigate("/potential")} // ✅ Fixed navigation
+            style={location.pathname === "/potential" ? activeLinkStyle : linkStyle}
+          >
+            Potential Candidates
+          </button>
         </li>
       </ul>
     </nav>
   );
 };
 
-// Basic inline styles (optional, replace with CSS if needed)
-const navStyle = {
+const navStyle: CSSProperties = {
+  position: "fixed",
+  top: 10,
+  left: 20,
   display: "flex",
-  justifyContent: "space-between",
   alignItems: "center",
-  padding: "10px 20px",
-  backgroundColor: "#282c34",
-  color: "white",
+  padding: "10px",
+  zIndex: 1000,
+  backgroundColor: "transparent",
 };
 
-const navListStyle = {
+const navListStyle: CSSProperties = {
   listStyle: "none",
   display: "flex",
-  gap: "20px",
+  gap: "15px",
+  padding: 0,
+  margin: 0,
 };
 
-const linkStyle = {
+const linkStyle: CSSProperties = {
   color: "white",
-  textDecoration: "none",
+  background: "none",
+  border: "none",
   fontSize: "18px",
+  padding: "8px 12px",
+  cursor: "pointer",
+  transition: "color 0.3s",
+};
+
+const activeLinkStyle: CSSProperties = {
+  ...linkStyle,
+  fontWeight: "bold",
+  textDecoration: "underline",
 };
 
 export default Nav;
